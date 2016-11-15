@@ -56,7 +56,14 @@ module StructTrans
       end
 
     else
-      raise UnknownSchema.new("Unknown schema: #{key.inspect}")
+      if key.respond_to?(:call)
+        transform_for_nested(kind, key.call(struct), schema).
+          each do |wrapped_key, value|
+            public_send("write_#{kind}", result, wrapped_key, value)
+          end
+      else
+        raise UnknownSchema.new("Unknown schema: #{key.inspect}")
+      end
     end
   end
 

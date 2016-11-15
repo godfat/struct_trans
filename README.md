@@ -53,6 +53,60 @@ p o.reverse.capitalize.swapcase # 'fNN'
 p o.reverse.upcase # 'FNN'
 ```
 
+## Demonstrations
+
+Consider that you have a `User` model and `Message` model.
+You want to expose them to the external world.
+
+``` ruby
+User = Struct.new(:id, :legacy_name, :messages)
+Message = Struct.new(:content, :sender)
+
+require 'forwardable'
+
+module Trans
+  def trans_hash *extra
+    StructTrans.trans_hash(self, *self.class.schema, *extra)
+  end
+end
+
+module Entity
+  def entity
+    {method(:new) => schema}
+  end
+end
+
+UserEntity = Struct.new(:user) do
+  extend Forwardable
+  def_delegator :user, :legacy_name, :name
+  def_delegators :user, :id, :messages
+
+  include Trans
+  extend Entity
+  def self.schema
+    [:id, :name]
+  end
+end
+
+MessageEntity = Struct.new(:message) do
+  extend Forwardable
+  def_delegators :message, :content, :sender
+
+  include Trans
+  extend Entity
+  def self.schema
+    [:content, {:sender => UserEntity.entity}]
+  end
+end
+
+user = User.new(0, 'Fungi')
+messages = [Message.new('nnf', user), Message.new('mmf', user)]
+user.messages = messages
+
+p UserEntity.new(user).trans_hash([:messages] => MessageEntity.entity)
+# {:id => 0, :name => 'Fungi', :messages => [{:content => 'nnf', :sender => {:id => 0, :name => 'Fungi'}}, {:content => 'mmf', :sender => {:id => 0, :name => 'Fungi'}}]}
+```
+
 ## CONTRIBUTORS:
 
 * Lin Jen-Shin (@godfat)
