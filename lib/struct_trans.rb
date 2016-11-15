@@ -18,43 +18,46 @@ module StructTrans
     case schema
     when Symbol
       public_send("write_#{kind}", result, schema, struct.public_send(schema))
-
     when Hash
-      schema.each do |key, nested_schema|
-        case key
-        when Symbol
-          value = transform_for_nested(
-            kind, struct.public_send(key), nested_schema)
-
-          public_send("write_#{kind}", result, key, value)
-
-        when Array
-          key.each do |list_key|
-            list = struct.public_send(list_key)
-
-            unless list.respond_to?(:map)
-              raise NoMap.new(
-                "Not responding to map:" \
-                " #{struct.class}##{list_key} -> #{list.inspect}")
-            end
-
-            value = list.map do |nested_struct|
-                      transform_for_nested(kind, nested_struct, nested_schema)
-                    end
-
-            public_send("write_#{kind}", result, list_key, value)
-          end
-
-        else
-          raise UnknownSchema.new("Unknown schema: #{key.inspect}")
-        end
-
-      end
+      schema.each(&method(:transform_for_hash).curry[kind, struct, result])
     else
       raise UnknownSchema.new("Unknown schema: #{schema.inspect}")
     end
 
     result
+  end
+
+  def transform_for_hash kind, struct, result, (key, schema)
+    # Workaround Ruby's curried function doesn't have proper arity set.
+    # Hash#each would only give key value separated if arity is 2,
+    # while curried transform_for_hash should have arity of 2 shows as -1 :(
+    case key
+    when Symbol
+      value = transform_for_nested(
+        kind, struct.public_send(key), schema)
+
+      public_send("write_#{kind}", result, key, value)
+
+    when Array
+      key.each do |list_key|
+        list = struct.public_send(list_key)
+
+        unless list.respond_to?(:map)
+          raise NoMap.new(
+            "Not responding to map:" \
+            " #{struct.class}##{list_key} -> #{list.inspect}")
+        end
+
+        value = list.map do |nested_struct|
+                  transform_for_nested(kind, nested_struct, schema)
+                end
+
+        public_send("write_#{kind}", result, list_key, value)
+      end
+
+    else
+      raise UnknownSchema.new("Unknown schema: #{key.inspect}")
+    end
   end
 
   def transform_for_nested kind, struct, schema
