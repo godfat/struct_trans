@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   ".gitmodules".freeze,
   ".travis.yml".freeze,
   "CHANGES.md".freeze,
+  "Gemfile".freeze,
   "README.md".freeze,
   "Rakefile".freeze,
   "lib/struct_trans.rb".freeze,
