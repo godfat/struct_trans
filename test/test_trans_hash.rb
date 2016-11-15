@@ -18,6 +18,12 @@ describe 'StructTrans.trans_hash' do
     end
   end
 
+  would 'raise StructTrans::KeyTaken for bad type' do
+    expect.raise(StructTrans::KeyTaken) do
+      StructTrans.trans_hash('nnf', :reverse, :reverse)
+    end
+  end
+
   would 'transform with symbol' do
     verify('nnf', :reverse, {:reverse => 'fnn'})
   end

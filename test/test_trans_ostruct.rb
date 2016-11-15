@@ -19,6 +19,12 @@ describe 'StructTrans.trans_ostruct' do
     end
   end
 
+  would 'raise StructTrans::KeyTaken for bad type' do
+    expect.raise(StructTrans::KeyTaken) do
+      StructTrans.trans_ostruct('nnf', :reverse, :reverse)
+    end
+  end
+
   would 'transform with symbol' do
     o = trans('nnf', :reverse)
 
