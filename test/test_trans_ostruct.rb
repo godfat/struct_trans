@@ -7,6 +7,12 @@ describe 'StructTrans.trans_ostruct' do
     StructTrans.trans_ostruct(struct, schema)
   end
 
+  would 'raise TypeError for bad type' do
+    expect.raise(TypeError) do
+      StructTrans.trans_ostruct('nnf', 1)
+    end
+  end
+
   would 'transform with symbol' do
     o = trans('nnf', :reverse)
 

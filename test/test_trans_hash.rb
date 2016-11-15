@@ -6,6 +6,12 @@ describe 'StructTrans.trans_hash' do
     expect(StructTrans.trans_hash(struct, schema)).eq result
   end
 
+  would 'raise TypeError for bad type' do
+    expect.raise(TypeError) do
+      StructTrans.trans_hash('nnf', 1)
+    end
+  end
+
   would 'transform with symbol' do
     verify('nnf', :reverse, 'fnn')
   end
