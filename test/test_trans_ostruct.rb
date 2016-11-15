@@ -89,4 +89,15 @@ describe 'StructTrans.trans_ostruct' do
       expect(c.upcase).eq n[i].upcase
     end
   end
+
+  would 'transform with multiple collections' do
+    n = 'nnf'
+    o = trans(n, [:chars, :lines] => :upcase)
+
+    o.chars.each.with_index do |c, i|
+      expect(c.upcase).eq n[i].upcase
+    end
+
+    expect(o.lines.map(&:upcase)).eq [n.upcase]
+  end
 end

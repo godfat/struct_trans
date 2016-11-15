@@ -76,4 +76,11 @@ describe 'StructTrans.trans_hash' do
       {[:chars] => :upcase},
       {:chars => [{:upcase => 'N'}, {:upcase => 'N'}, {:upcase => 'F'}]})
   end
+
+  would 'transform with multiple collections' do
+    verify('nnf',
+      {[:chars, :lines] => :upcase},
+      {:chars => [{:upcase => 'N'}, {:upcase => 'N'}, {:upcase => 'F'}],
+       :lines => [{:upcase => 'NNF'}]})
+  end
 end
