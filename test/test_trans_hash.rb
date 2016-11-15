@@ -22,12 +22,20 @@ describe 'StructTrans.trans_hash' do
     expect(message).include?('1')
   end
 
-  would 'raise StructTrans::KeyTaken for bad type' do
+  would 'raise StructTrans::KeyTaken for duplicated keys' do
     message = expect.raise(StructTrans::KeyTaken) do
       StructTrans.trans_hash('nnf', :reverse, :reverse)
     end.message
 
     expect(message).include?('reverse')
+  end
+
+  would 'raise StructTrans::NoMap for bad collection data' do
+    message = expect.raise(StructTrans::NoMap) do
+      StructTrans.trans_hash('nnf', [:upcase] => :downcase)
+    end.message
+
+    expect(message).include?('NNF')
   end
 
   would 'transform with symbol' do

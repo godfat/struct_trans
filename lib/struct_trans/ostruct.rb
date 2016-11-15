@@ -15,7 +15,7 @@ module StructTrans
   def write_ostruct ostruct, key, value
     message = "#{key}="
 
-    raise KeyTaken.new("key #{key} is already taken") if
+    raise KeyTaken.new("Key already taken: #{key.inspect}") if
       ostruct.respond_to?(message)
 
     ostruct.public_send(message, value)

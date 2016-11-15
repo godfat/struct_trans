@@ -13,7 +13,8 @@ module StructTrans
   end
 
   def write_hash hash, key, value
-    raise KeyTaken.new("key #{key} is already taken") if hash.key?(key)
+    raise KeyTaken.new("Key already taken: #{key.inspect}") if
+      hash.key?(key)
 
     hash[key] = value
   end

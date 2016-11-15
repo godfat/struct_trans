@@ -4,6 +4,7 @@ require 'struct_trans/hash'
 module StructTrans
   UnknownSchema = Class.new(TypeError)
   UnknownNestedSchema = Class.new(UnknownSchema)
+  NoMap = Class.new(TypeError)
   KeyTaken = Class.new(ArgumentError)
 
   module_function
@@ -31,7 +32,13 @@ module StructTrans
         when Array
           key.each do |list_key|
             list = struct.public_send(list_key)
-            raise T unless list.respond_to?(:map)
+
+            unless list.respond_to?(:map)
+              raise NoMap.new(
+                "Not responding to map:" \
+                " #{struct.class}##{list_key} -> #{list.inspect}")
+            end
+
             value = list.map do |nested_struct|
                       transform_for_nested(kind, nested_struct, nested_schema)
                     end
