@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = "Transform a struct with a schema to a hash, other struct, or more.".freeze
   s.email = ["godfat (XD) godfat.org".freeze]
   s.files = [
+  ".gitignore".freeze,
   ".gitmodules".freeze,
   ".travis.yml".freeze,
   "CHANGES.md".freeze,
