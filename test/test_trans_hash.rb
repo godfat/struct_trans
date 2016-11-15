@@ -99,4 +99,15 @@ describe 'StructTrans.trans_hash' do
       {:chars => [{:upcase => 'N'}, {:upcase => 'N'}, {:upcase => 'F'}],
        :lines => [{:upcase => 'NNF'}]})
   end
+
+  would 'transform with complicated collections' do
+    verify('nnf',
+      {:upcase => {[:chars] => {[:codepoints] => [:succ, :pred]}}},
+      {:upcase => {:chars => [{:codepoints => [{:succ => 79, :pred => 77}]},
+                              {:codepoints => [{:succ => 79, :pred => 77}]},
+                              {:codepoints => [{:succ => 71, :pred => 69}]}]
+                  }
+      }
+    )
+  end
 end
