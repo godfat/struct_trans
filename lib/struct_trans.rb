@@ -14,7 +14,7 @@ module StructTrans
       &method(:transform_for).curry[kind, struct])
   end
 
-  def transform_for kind, struct, result, schema, *extra
+  def transform_for kind, struct, result, schema
     case schema
     when Symbol
       public_send("write_#{kind}", result, schema, struct.public_send(schema))
