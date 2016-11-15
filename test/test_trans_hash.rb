@@ -6,7 +6,7 @@ describe 'StructTrans.trans_hash' do
     expect(StructTrans.trans_hash(struct, *schemas)).eq result
   end
 
-  would 'raise StructTrans::UnknownSchema for bad type' do
+  would 'raise StructTrans::UnknownSchema for bad schema' do
     message = expect.raise(StructTrans::UnknownSchema) do
       StructTrans.trans_hash('nnf', 1)
     end.message
@@ -14,9 +14,17 @@ describe 'StructTrans.trans_hash' do
     expect(message).include?('1')
   end
 
-  would 'raise StructTrans::UnknownNestedSchema for bad type' do
-    message = expect.raise(StructTrans::UnknownNestedSchema) do
+  would 'raise StructTrans::UnknownSchema for bad nested schema' do
+    message = expect.raise(StructTrans::UnknownSchema) do
       StructTrans.trans_hash('nnf', :reverse => 1)
+    end.message
+
+    expect(message).include?('1')
+  end
+
+  would 'raise StructTrans::UnknownSchema for bad nested nested schema' do
+    message = expect.raise(StructTrans::UnknownSchema) do
+      StructTrans.trans_hash('nnf', :reverse => {1 => :upcase})
     end.message
 
     expect(message).include?('1')

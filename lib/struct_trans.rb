@@ -2,10 +2,9 @@
 require 'struct_trans/hash'
 
 module StructTrans
-  UnknownSchema = Class.new(TypeError)
-  UnknownNestedSchema = Class.new(UnknownSchema)
-  NoMap = Class.new(TypeError)
+  UnknownSchema = Class.new(ArgumentError)
   KeyTaken = Class.new(ArgumentError)
+  NoMap = Class.new(TypeError)
 
   module_function
 
@@ -45,6 +44,9 @@ module StructTrans
 
             public_send("write_#{kind}", result, list_key, value)
           end
+
+        else
+          raise UnknownSchema.new("Unknown schema: #{key.inspect}")
         end
 
       end
@@ -62,7 +64,7 @@ module StructTrans
     when Array
       transform(kind, struct, schema)
     else
-      raise UnknownNestedSchema.new("Unknown schema: #{schema.inspect}")
+      raise UnknownSchema.new("Unknown schema: #{schema.inspect}")
     end
   end
 end

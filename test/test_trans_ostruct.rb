@@ -7,7 +7,7 @@ describe 'StructTrans.trans_ostruct' do
     StructTrans.trans_ostruct(struct, *schemas)
   end
 
-  would 'raise StructTrans::UnknownSchema for bad type' do
+  would 'raise StructTrans::UnknownSchema for bad schema' do
     message = expect.raise(StructTrans::UnknownSchema) do
       StructTrans.trans_ostruct('nnf', 1)
     end.message
@@ -15,9 +15,17 @@ describe 'StructTrans.trans_ostruct' do
     expect(message).include?('1')
   end
 
-  would 'raise StructTrans::UnknownNestedSchema for bad type' do
-    message = expect.raise(StructTrans::UnknownNestedSchema) do
+  would 'raise StructTrans::UnknownSchema for bad nested schema' do
+    message = expect.raise(StructTrans::UnknownSchema) do
       StructTrans.trans_ostruct('nnf', :reverse => 1)
+    end.message
+
+    expect(message).include?('1')
+  end
+
+  would 'raise StructTrans::UnknownSchema for bad nested nested schema' do
+    message = expect.raise(StructTrans::UnknownSchema) do
+      StructTrans.trans_ostruct('nnf', :reverse => {1 => :upcase})
     end.message
 
     expect(message).include?('1')
