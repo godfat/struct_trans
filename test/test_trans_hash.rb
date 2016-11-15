@@ -6,9 +6,15 @@ describe 'StructTrans.trans_hash' do
     expect(StructTrans.trans_hash(struct, *schemas)).eq result
   end
 
-  would 'raise TypeError for bad type' do
-    expect.raise(TypeError) do
+  would 'raise StructTrans::UnknownSchema for bad type' do
+    expect.raise(StructTrans::UnknownSchema) do
       StructTrans.trans_hash('nnf', 1)
+    end
+  end
+
+  would 'raise StructTrans::UnknownNestedSchema for bad type' do
+    expect.raise(StructTrans::UnknownNestedSchema) do
+      StructTrans.trans_hash('nnf', :reverse => 1)
     end
   end
 
