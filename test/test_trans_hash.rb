@@ -52,4 +52,10 @@ describe 'StructTrans.trans_hash' do
       {:inspect => '"nnf"',
        :reverse => {:capitalize => {:swapcase => 'fNN'}, :upcase => 'FNN'}})
   end
+
+  would 'transform with collections' do
+    verify('nnf',
+      {[:chars] => :upcase},
+      {:chars => [{:upcase => 'N'}, {:upcase => 'N'}, {:upcase => 'F'}]})
+  end
 end
