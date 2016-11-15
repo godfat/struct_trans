@@ -2,8 +2,8 @@
 require 'struct_trans/test'
 
 describe 'StructTrans.trans_hash' do
-  def verify struct, schema, result
-    expect(StructTrans.trans_hash(struct, schema)).eq result
+  def verify struct, *schemas, result
+    expect(StructTrans.trans_hash(struct, *schemas)).eq result
   end
 
   would 'raise TypeError for bad type' do
@@ -13,38 +13,43 @@ describe 'StructTrans.trans_hash' do
   end
 
   would 'transform with symbol' do
-    verify('nnf', :reverse, 'fnn')
+    verify('nnf', :reverse, {:reverse => 'fnn'})
   end
 
   would 'transform with array' do
-    verify('nnf', [:reverse, :capitalize], %w[fnn Nnf])
+    verify('nnf', :reverse, :capitalize,
+      {:reverse => 'fnn', :capitalize => 'Nnf'})
   end
 
   would 'transform with hash' do
-    verify('nnf', {:reverse => :capitalize}, {:reverse => 'Fnn'})
+    verify('nnf', {:reverse => :capitalize},
+      {:reverse => {:capitalize => 'Fnn'}})
   end
 
   would 'transform with array containing hashes' do
     verify('nnf',
-      [:reverse, {:reverse => :capitalize}],
-      ['fnn', :reverse => 'Fnn'])
+      :inspect, {:reverse => :capitalize},
+      {:inspect => '"nnf"', :reverse => {:capitalize => 'Fnn'}})
   end
 
   would 'transform with array containing hashes containing arrays' do
     verify('nnf',
-      [:reverse, {:reverse => [:capitalize, :upcase]}],
-      ['fnn', :reverse => ['Fnn', 'FNN']])
+      :inspect, {:reverse => [:capitalize, :upcase]},
+      {:inspect => '"nnf"',
+       :reverse => {:capitalize => 'Fnn', :upcase => 'FNN'}})
   end
 
   would 'transform with array containing hashes containing hashes' do
     verify('nnf',
-      [:reverse, {:reverse => {:capitalize => :swapcase}}],
-      ['fnn', :reverse => {:capitalize => 'fNN'}])
+      :inspect, {:reverse => {:capitalize => :swapcase}},
+      {:inspect => '"nnf"',
+       :reverse => {:capitalize => {:swapcase => 'fNN'}}})
   end
 
   would 'transform with array containing hashes containing mixed arrays' do
     verify('nnf',
-      [:inspect, {:reverse => [{:capitalize => :swapcase}, :upcase]}],
-      ['"nnf"', {:reverse => [{:capitalize => 'fNN'}, 'FNN']}])
+      :inspect, {:reverse => [{:capitalize => :swapcase}, :upcase]},
+      {:inspect => '"nnf"',
+       :reverse => {:capitalize => {:swapcase => 'fNN'}, :upcase => 'FNN'}})
   end
 end

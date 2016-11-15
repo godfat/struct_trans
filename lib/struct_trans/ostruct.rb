@@ -4,8 +4,8 @@ require 'ostruct'
 module StructTrans
   module_function
 
-  def trans_ostruct struct, schema
-    transform(:ostruct, struct, schema)
+  def trans_ostruct struct, *schemas
+    transform(:ostruct, struct, schemas)
   end
 
   def construct_ostruct

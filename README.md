@@ -34,8 +34,8 @@ another hash and a symbol.
 ``` ruby
 p StructTrans.trans_hash(
   'nnf',
-  [:inspect, {:reverse => [{:capitalize => :swapcase}, :upcase]}])
-  # ['"nnf"', {:reverse => [{:capitalize => 'fNN'}, 'FNN']}]
+  :inspect, {:reverse => [{:capitalize => :swapcase}, :upcase]})
+  # {:inspect => '"nnf"', :reverse => {:capitalize => {:swapcase => 'fNN'}, :upcase => 'FNN'}}
 ```
 
 We could also transform the same struct (i.e. `'nnf'`) into an open struct
@@ -46,11 +46,11 @@ require 'struct_trans/ostruct'
 
 o = StructTrans.trans_ostruct(
   'nnf',
-  [:inspect, {:reverse => [{:capitalize => :swapcase}, :upcase]}])
+  :upcase, {:reverse => [{:capitalize => :swapcase}, :upcase]})
 
-p o[0] # '"nnf"'
-p o[1].reverse[0].capitalize # 'fNN'
-p o[1].reverse[1] # 'FNN'
+p o.upcase # 'NNF'
+p o.reverse.capitalize.swapcase # 'fNN'
+p o.reverse.upcase # 'FNN'
 ```
 
 ## CONTRIBUTORS:

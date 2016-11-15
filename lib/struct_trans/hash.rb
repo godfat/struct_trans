@@ -4,8 +4,8 @@
 module StructTrans
   module_function
 
-  def trans_hash struct, schema
-    transform(:hash, struct, schema)
+  def trans_hash struct, *schemas
+    transform(:hash, struct, schemas)
   end
 
   def construct_hash
