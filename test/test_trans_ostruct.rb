@@ -8,21 +8,27 @@ describe 'StructTrans.trans_ostruct' do
   end
 
   would 'raise StructTrans::UnknownSchema for bad type' do
-    expect.raise(StructTrans::UnknownSchema) do
+    message = expect.raise(StructTrans::UnknownSchema) do
       StructTrans.trans_ostruct('nnf', 1)
-    end
+    end.message
+
+    expect(message).include?('1')
   end
 
   would 'raise StructTrans::UnknownNestedSchema for bad type' do
-    expect.raise(StructTrans::UnknownNestedSchema) do
+    message = expect.raise(StructTrans::UnknownNestedSchema) do
       StructTrans.trans_ostruct('nnf', :reverse => 1)
-    end
+    end.message
+
+    expect(message).include?('1')
   end
 
   would 'raise StructTrans::KeyTaken for bad type' do
-    expect.raise(StructTrans::KeyTaken) do
+    message = expect.raise(StructTrans::KeyTaken) do
       StructTrans.trans_ostruct('nnf', :reverse, :reverse)
-    end
+    end.message
+
+    expect(message).include?('reverse')
   end
 
   would 'transform with symbol' do
