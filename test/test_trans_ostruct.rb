@@ -80,4 +80,13 @@ describe 'StructTrans.trans_ostruct' do
     expect(o.reverse.capitalize.swapcase).eq 'fNN'
     expect(o.reverse.upcase)             .eq 'FNN'
   end
+
+  would 'transform with collections' do
+    n = 'nnf'
+    o = trans(n, [:chars] => :upcase)
+
+    o.chars.each.with_index do |c, i|
+      expect(c.upcase).eq n[i].upcase
+    end
+  end
 end
