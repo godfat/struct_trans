@@ -66,13 +66,13 @@ require 'forwardable'
 
 module Trans
   def trans_hash *extra
-    StructTrans.trans_hash(self, *self.class.schema, *extra)
+    StructTrans.trans_hash(self, *self.class.schema(*extra))
   end
 end
 
 module Entity
-  def entity
-    {method(:new) => schema}
+  def entity *extra
+    {method(:new) => schema(*extra)}
   end
 end
 
@@ -83,8 +83,8 @@ UserEntity = Struct.new(:user) do
 
   include Trans
   extend Entity
-  def self.schema
-    [:id, :name]
+  def self.schema *extra
+    [:name] + extra
   end
 end
 
@@ -94,8 +94,8 @@ MessageEntity = Struct.new(:message) do
 
   include Trans
   extend Entity
-  def self.schema
-    [:content, {:sender => UserEntity.entity}]
+  def self.schema *extra
+    [:content, {:sender => UserEntity.entity(:id)}] + extra
   end
 end
 
@@ -103,7 +103,7 @@ user = User.new(0, 'Fungi')
 messages = [Message.new('nnf', user), Message.new('mmf', user)]
 user.messages = messages
 
-p UserEntity.new(user).trans_hash([:messages] => MessageEntity.entity)
+p UserEntity.new(user).trans_hash(:id, [:messages] => MessageEntity.entity)
 # {:id => 0, :name => 'Fungi', :messages => [{:content => 'nnf', :sender => {:id => 0, :name => 'Fungi'}}, {:content => 'mmf', :sender => {:id => 0, :name => 'Fungi'}}]}
 ```
 
