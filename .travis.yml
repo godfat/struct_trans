@@ -3,15 +3,15 @@ language: ruby
 rvm:
   - 2.2.5
   - 2.3.1
-  - rbx
   - jruby-9
+  - rbx
 
 before_install:
   - rvm get head
   - rvm reload
   - rvm use --install $TRAVIS_RUBY_VERSION --binary --latest
 install: 'gem install bundler; bundle install --retry=3'
-script: 'ruby -vr bundler/setup -S rake test'
+script: 'env JRUBY_OPTS="--debug" ruby -vr bundler/setup -S rake test'
 
 matrix:
   allow_failures:
