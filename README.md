@@ -1,4 +1,4 @@
-# StructTrans [![Build Status](https://secure.travis-ci.org/godfat/struct_trans.png?branch=master)](http://travis-ci.org/godfat/struct_trans) [![Coverage Status](https://coveralls.io/repos/godfat/struct_trans/badge.png?branch=master)](https://coveralls.io/r/godfat/struct_trans?branch=master) [![Join the chat at https://gitter.im/godfat/struct_trans](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/godfat/struct_trans)
+# StructTrans [![Build Status](https://secure.travis-ci.org/godfat/struct_trans.png?branch=master)](http://travis-ci.org/godfat/struct_trans) [![Coverage Status](https://coveralls.io/repos/github/godfat/struct_trans/badge.png)](https://coveralls.io/github/godfat/struct_trans) [![Join the chat at https://gitter.im/godfat/struct_trans](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/godfat/struct_trans)
 
 by Lin Jen-Shin ([godfat](http://godfat.org))
 
