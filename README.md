@@ -19,7 +19,7 @@ We need an easy way to define how we want to expose data to the external.
 
 ## REQUIREMENTS:
 
-* Tested with MRI (official CRuby), Rubinius and JRuby.
+* Tested with MRI (official CRuby) and JRuby.
 
 ## INSTALLATION:
 
